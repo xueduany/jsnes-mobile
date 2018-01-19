@@ -1,29 +1,4 @@
 JSNES
 =====
 
-A JavaScript NES emulator.
-
-Build
------
-
-To build a distribution, you will [Grunt](http://gruntjs.com):
-
-    $ sudo npm install -g grunt-cli
-
-Then run:
-
-    $ npm install
-    $ grunt
-
-This will create ``jsnes.js`` and ``jsnes-min.js`` in ``build/``.
-
-Benchmark
----------
-
-The benchmark in ``test/benchmark.js`` is intended for testing JavaScript 
-engines. It does not depend on a DOM or Canvas element etc.
-
-
-
-
-REGSVR32 "C:\Program Files (x86)\Common Files\System\Ole DB\MSDASQL.DLL" 
+JSNES 移动版本，专门为手机，微信做了操作优化 
