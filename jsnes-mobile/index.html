@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小霸王游戏机3千游戏合集</title>
+	<link rel="stylesheet" type="text/css" href="index.css" />
+    
+</head>
+
+<body class="">
+<div id='wx_pic' style='margin:0 auto;display:none;'>
+	<img src="http://xueduanyang.xyz/jsnes-mobile/fc.png">
+</div>
+    <div id="emulator"></div>
+    
+    <div id="mobile-controlls">
+	   <div id="controls-direction">
+	   	<div class="joydirection leftup"></div>
+	   	<div class="up joydirection"></div>
+	   	<div class="joydirection rightup"></div>
+	   	<div class="left joydirection"></div>
+	   	<div class="center joydirection"></div>
+	   	<div class="right joydirection"></div>
+	   	<div class="leftdown joydirection"></div>
+	   	<div class="down joydirection"></div>
+	   	<div class="rightdown joydirection"></div>
+	   </div>
+	   <div class="controls-center-select joybtn" id="joystick_btn_select">Select</div>
+	   <div class="controls-center-start joybtn" id="joystick_btn_start">Start</div>
+	   <div id="controls-turbofire">
+	   	<div class="a joybtn"></div>
+	   	<div class="b joybtn"></div>
+	   	<div class="c"></div>
+	   </div>
+	  	<div id="controls-fire">
+	   	<div class="a joybtn"></div>
+	   	<div class="b joybtn"></div>
+	   	<div class="c"></div>
+	   </div>
+    </div>
+    
+    <div id="pc-controlls">
+	    <table id="controls">
+	        <tr>
+	            <th>Button</th>
+	            <th>Player 1</th>
+	            <th>Player 2</th>
+	        </tr>
+	        <tr>
+	            <td>Left</td>
+	            <td>Left</td>
+	            <td>Num-4</td>
+	        <tr>
+	            <td>Right</td>
+	            <td>Right</td>
+	            <td>Num-6</td>
+	        </tr>
+	        <tr>
+	            <td>Up</td>
+	            <td>Up</td>
+	            <td>Num-8</td>
+	        </tr>
+	        <tr>
+	            <td>Down</td>
+	            <td>Down</td>
+	            <td>Num-2</td>
+	        </tr>
+	        <tr>
+	            <td>A</td>
+	            <td>X</td>
+	            <td>Num-7</td>
+	        </tr>
+	        <tr>
+	            <td>B</td>
+	            <td>Z/Y</td>
+	            <td>Num-9</td>
+	        </tr>
+	        <tr>
+	            <td>AA</td>
+	            <td>A</td>
+	            <td>Num-/</td>
+	        </tr>
+	        <tr>
+	            <td>BB</td>
+	            <td>S</td>
+	            <td>Num-*</td>
+	        </tr>
+	        <tr>
+	            <td>Start</td>
+	            <td>Enter</td>
+	            <td>Num-1</td>
+	        </tr>
+	        <tr>
+	            <td>Select</td>
+	            <td>Ctrl</td>
+	            <td>Num-3</td>
+	        </tr>
+	    </table>
+	</div>
+    
+    
+
+    <script src="lib/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="lib/dynamicaudio-min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/nes.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/utils.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/cpu.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/keyboard.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/mappers.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/papu.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/ppu.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/rom.js" type="text/javascript" charset="utf-8"></script>
+    <script src="source/ui.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        var nes;
+        $(function() {
+            nes = new JSNES({
+                'ui': $('#emulator').JSNESUI({
+                    "Homebrew": [
+                        ['Concentration Room', 'roms/croom/croom.nes'],
+                        ['LJ65', 'roms/lj65/lj65.nes'],
+                    ],
+                    "Working": [
+						['BM', 'roms/BM.nes'],
+                        ['Bubble Bobble', 'roms/Bubble Bobble (U).nes'],
+                        ['Captain American', 'roms/Captain American [p1][!].nes'],
+                        ['Contra', 'roms/Contra (U) [!].nes'],
+                        ['Donkey Kong', 'roms/Donkey Kong (JU).nes'],
+                        ['Double Dragon', 'roms/Double Dragon (U) [!].nes'],
+                        ['Dr. Mario', 'roms/Dr. Mario (JU).nes'],
+                        ['F1', 'roms/F-1 Race (J).nes'],
+                        ['The Surprise at Dinosaur Peak', 'roms/Flintstones, The - The Surprise at Dinosaur Peak! (U) [p1][!].nes'],
+                        ['Golf', 'roms/Golf (JU).nes'],
+                        ['The Legend of Zelda', 'roms/Legend of Zelda, The (U) (PRG1).nes'],
+                        ['Lemmings', 'roms/Lemmings (U).nes'],
+                        ['Lifeforce', 'roms/Lifeforce (U).nes'],
+                        
+                        ['Mario Bros.', 'roms/Mario Bros. (JU) [!].nes'],
+                        ['Mega Man', 'roms/Mega Man (U).nes'],
+                        ['Mega Man 2', 'roms/Megaman II (U) [!].nes'],
+                        ['Pac-Man', 'roms/Pac-Man (U) [!].nes'],
+                        ['Super Mario Bros.', 'roms/Super Mario Bros. (JU) (PRG0) [!].nes'],
+                        ['Super Mario Bros. 3', 'roms/Super Mario Bros. 3 (U) (PRG1) [!].nes'],
+                        ['Tennis', 'roms/Tennis (JU) [!].nes'],
+                        ['Tetris', 'roms/Tetris (U) [!].nes'],
+                        ['Tetris 2', 'roms/Tetris 2 (U) [!].nes'],
+                        ['Zelda II - The Adventure of Link', 'roms/Zelda II - The Adventure of Link (U).nes']
+                    ]
+
+                    
+                })
+            });
+            nes.ui.loadROM('roms/Contra (U) [!].nes')
+        });
+        
+        document.body.addEventListener('touchmove', function(e){
+        	e.preventDefault();
+        }, false)
+        document.addEventListener('gesturestart', function (e) {
+		    e.preventDefault();
+		});
+        
+        
+	
+    </script>
+    <!--[if IE]>
+        <script type="text/vbscript" src="source/jsnes-ie-hacks.vbscript"></script>
+    <![endif]-->
+	
+	<a class="shang anim_m" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7c28e5bb8f63b698&redirect_uri=http%3a%2f%2fxueduanyang.xyz%2fweixinpay%2fexample%2fProductPage.aspx&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect" target="_blank"><img src="shang.gif" width="50"></a>
+	
+</body>
+</html>
