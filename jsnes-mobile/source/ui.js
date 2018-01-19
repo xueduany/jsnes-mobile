@@ -680,7 +680,7 @@ if (typeof jQuery !== 'undefined') {
                     var self = this;
                     self.updateStatus("Downloading...");
                     $.ajax({
-                        url: escape(name || self.romSelect.val()),
+                        url: (name || self.romSelect.val()),
                         xhr: function() {
                             var xhr = $.ajaxSettings.xhr();
                             if (typeof xhr.overrideMimeType !== 'undefined') {

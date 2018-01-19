@@ -208,6 +208,7 @@ JSNES.ROM.prototype = {
             return new JSNES.Mappers[this.mapperType](this.nes);
         }
         else {
+			alert('Sorry, not support this rom now!');
             this.nes.ui.updateStatus("This ROM uses a mapper not supported by JSNES: "+this.getMapperName()+"("+this.mapperType+")");
             return null;
         }

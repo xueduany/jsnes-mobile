@@ -7,7 +7,7 @@ var path = require("path");
 var remotePath = "/roms";
 
 //获取当前目录绝对路径，这里resolve()不传入参数
-var filePath = path.resolve('./roms');
+var filePath = path.resolve('../../rom_cn');
 
 //读取文件存储数组
 var fileArr = [];
@@ -16,7 +16,7 @@ var fileArr = [];
 var files = fs.readdirSync(filePath);
     
 var count = files.length;
-
+console.log(files)
 writeFile(files);
  
 
@@ -27,10 +27,10 @@ function writeFile(fileArr){
 	for(var i=0;i<fileArr.length;i++){
 		var f = fileArr[i].split('.');
 		//console.log(f);
-		data.push('["'+f[0]+'","'+fileArr[i]+'"');
+		data.push('["'+f[0]+'","roms/rom_cn/'+(fileArr[i])+'"]');
 	}
     var data = data.join(",\n");
-    fs.writeFileSync("./"+"filelist.txt",data+'\n',function(err){
+    fs.writeFileSync("../../"+"filelist.txt",data+'\r\n',function(err){
         if(err) throw err;
         console.log("写入成功");
     });
