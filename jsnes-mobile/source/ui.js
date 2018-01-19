@@ -90,10 +90,18 @@ if (typeof jQuery !== 'undefined') {
                     if (self.nes.opts.emulateSound) {
                         self.nes.opts.emulateSound = false;
                         self.buttons.sound.attr("value", "enable sound");
+                        
+                        
+                        
+                        
                     }
                     else {
                         self.nes.opts.emulateSound = true;
                         self.buttons.sound.attr("value", "disable sound");
+                        
+                        var source = self.audio.createBufferSource();
+                        source.connect(self.audio.destination); // Output to sound
+    					source.start();
                     }
                 });
         
@@ -655,7 +663,7 @@ if (typeof jQuery !== 'undefined') {
 //                self.dynamicaudio = new DynamicAudio({
 //                    swf: nes.opts.swfPath+'dynamicaudio.swf'
 //                });
-                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                window.AudioContext = window.webkitAudioContext || window.AudioContext;
                 try {
                     self.audio = new AudioContext();
                 } catch(e) {
@@ -742,6 +750,8 @@ if (typeof jQuery !== 'undefined') {
                     }
                     else {
                         this.buttons.sound.attr("value", "enable sound");
+                        
+                        
                     }
                 },
             
