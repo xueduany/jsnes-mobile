@@ -1,39 +1,39 @@
 /*
-JSNES, based on Jamie Sanders' vNES
-Copyright (C) 2010 Ben Firshman
+ JSNES, based on Jamie Sanders' vNES
+ Copyright (C) 2010 Ben Firshman
+ 
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ 
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-JSNES.ROM = function(nes) {
+JSNES.ROM = function (nes) {
     this.nes = nes;
-    
+
     this.mapperName = new Array(92);
-    
-    for (var i=0;i<92;i++) {
+
+    for (var i = 0; i < 92; i++) {
         this.mapperName[i] = "Unknown Mapper";
     }
-    this.mapperName[ 0] = "Direct Access";
-    this.mapperName[ 1] = "Nintendo MMC1";
-    this.mapperName[ 2] = "UNROM";
-    this.mapperName[ 3] = "CNROM";
-    this.mapperName[ 4] = "Nintendo MMC3";
-    this.mapperName[ 5] = "Nintendo MMC5";
-    this.mapperName[ 6] = "FFE F4xxx";
-    this.mapperName[ 7] = "AOROM";
-    this.mapperName[ 8] = "FFE F3xxx";
-    this.mapperName[ 9] = "Nintendo MMC2";
+    this.mapperName[0] = "Direct Access";
+    this.mapperName[1] = "Nintendo MMC1";
+    this.mapperName[2] = "UNROM";
+    this.mapperName[3] = "CNROM";
+    this.mapperName[4] = "Nintendo MMC3";
+    this.mapperName[5] = "Nintendo MMC5";
+    this.mapperName[6] = "FFE F4xxx";
+    this.mapperName[7] = "AOROM";
+    this.mapperName[8] = "FFE F3xxx";
+    this.mapperName[9] = "Nintendo MMC2";
     this.mapperName[10] = "Nintendo MMC4";
     this.mapperName[11] = "Color Dreams Chip";
     this.mapperName[12] = "FFE F6xxx";
@@ -51,7 +51,7 @@ JSNES.ROM = function(nes) {
     this.mapperName[32] = "Irem G-101 chip";
     this.mapperName[33] = "Taito TC0190/TC0350";
     this.mapperName[34] = "32kB ROM switch";
-    
+
     this.mapperName[64] = "Tengen RAMBO-1 chip";
     this.mapperName[65] = "Irem H-3001 chip";
     this.mapperName[66] = "GNROM switch";
@@ -73,12 +73,12 @@ JSNES.ROM.prototype = {
     SINGLESCREEN_MIRRORING3: 5,
     SINGLESCREEN_MIRRORING4: 6,
     CHRROM_MIRRORING: 7,
-    
+
     header: null,
     rom: null,
     vrom: null,
     vromTile: null,
-    
+
     romCount: null,
     vromCount: null,
     mirroring: null,
@@ -87,102 +87,100 @@ JSNES.ROM.prototype = {
     fourScreen: null,
     mapperType: null,
     valid: false,
-    
-    load: function(data) {
+
+    load: function (data) {
         var i, j, v;
-        
+
         if (data.indexOf("NES\x1a") === -1) {
-            this.nes.ui.updateStatus("Not a valid NES ROM.");
-            return;
+            throw new Error("Not a valid NES ROM.");
         }
         this.header = new Array(16);
         for (i = 0; i < 16; i++) {
-            this.header[i] = data.charCodeAt(i) & 0xFF;
+            this.header[i] = data.charCodeAt(i) & 0xff;
         }
         this.romCount = this.header[4];
-        this.vromCount = this.header[5]*2; // Get the number of 4kB banks, not 8kB
-        this.mirroring = ((this.header[6] & 1) !== 0 ? 1 : 0);
+        this.vromCount = this.header[5] * 2; // Get the number of 4kB banks, not 8kB
+        this.mirroring = (this.header[6] & 1) !== 0 ? 1 : 0;
         this.batteryRam = (this.header[6] & 2) !== 0;
         this.trainer = (this.header[6] & 4) !== 0;
         this.fourScreen = (this.header[6] & 8) !== 0;
-        this.mapperType = (this.header[6] >> 4) | (this.header[7] & 0xF0);
+        this.mapperType = (this.header[6] >> 4) | (this.header[7] & 0xf0);
         /* TODO
-        if (this.batteryRam)
-            this.loadBatteryRam();*/
+            if (this.batteryRam)
+                this.loadBatteryRam();*/
         // Check whether byte 8-15 are zero's:
         var foundError = false;
-        for (i=8; i<16; i++) {
+        for (i = 8; i < 16; i++) {
             if (this.header[i] !== 0) {
                 foundError = true;
                 break;
             }
         }
         if (foundError) {
-            this.mapperType &= 0xF; // Ignore byte 7
+            this.mapperType &= 0xf; // Ignore byte 7
         }
         // Load PRG-ROM banks:
         this.rom = new Array(this.romCount);
         var offset = 16;
-        for (i=0; i < this.romCount; i++) {
+        for (i = 0; i < this.romCount; i++) {
             this.rom[i] = new Array(16384);
-            for (j=0; j < 16384; j++) {
-                if (offset+j >= data.length) {
+            for (j = 0; j < 16384; j++) {
+                if (offset + j >= data.length) {
                     break;
                 }
-                this.rom[i][j] = data.charCodeAt(offset + j) & 0xFF;
+                this.rom[i][j] = data.charCodeAt(offset + j) & 0xff;
             }
             offset += 16384;
         }
         // Load CHR-ROM banks:
         this.vrom = new Array(this.vromCount);
-        for (i=0; i < this.vromCount; i++) {
+        for (i = 0; i < this.vromCount; i++) {
             this.vrom[i] = new Array(4096);
-            for (j=0; j < 4096; j++) {
-                if (offset+j >= data.length){
+            for (j = 0; j < 4096; j++) {
+                if (offset + j >= data.length) {
                     break;
                 }
-                this.vrom[i][j] = data.charCodeAt(offset + j) & 0xFF;
+                this.vrom[i][j] = data.charCodeAt(offset + j) & 0xff;
             }
             offset += 4096;
         }
-        
+
         // Create VROM tiles:
         this.vromTile = new Array(this.vromCount);
-        for (i=0; i < this.vromCount; i++) {
+        for (i = 0; i < this.vromCount; i++) {
             this.vromTile[i] = new Array(256);
-            for (j=0; j < 256; j++) {
+            for (j = 0; j < 256; j++) {
                 this.vromTile[i][j] = new JSNES.PPU.Tile();
             }
         }
-        
+
         // Convert CHR-ROM banks to tiles:
         var tileIndex;
         var leftOver;
-        for (v=0; v < this.vromCount; v++) {
-            for (i=0; i < 4096; i++) {
+        for (v = 0; v < this.vromCount; v++) {
+            for (i = 0; i < 4096; i++) {
                 tileIndex = i >> 4;
                 leftOver = i % 16;
                 if (leftOver < 8) {
                     this.vromTile[v][tileIndex].setScanline(
                         leftOver,
                         this.vrom[v][i],
-                        this.vrom[v][i+8]
+                        this.vrom[v][i + 8]
                     );
-                }
-                else {
+                } else {
                     this.vromTile[v][tileIndex].setScanline(
-                        leftOver-8,
-                        this.vrom[v][i-8],
+                        leftOver - 8,
+                        this.vrom[v][i - 8],
                         this.vrom[v][i]
                     );
                 }
             }
         }
-        
+
         this.valid = true;
     },
-    
-    getMirroringType: function() {
+
+    getMirroringType: function () {
         if (this.fourScreen) {
             return this.FOURSCREEN_MIRRORING;
         }
@@ -191,26 +189,29 @@ JSNES.ROM.prototype = {
         }
         return this.VERTICAL_MIRRORING;
     },
-    
-    getMapperName: function() {
+
+    getMapperName: function () {
         if (this.mapperType >= 0 && this.mapperType < this.mapperName.length) {
             return this.mapperName[this.mapperType];
         }
-        return "Unknown Mapper, "+this.mapperType;
+        return "Unknown Mapper, " + this.mapperType;
     },
-    
-    mapperSupported: function() {
-        return typeof JSNES.Mappers[this.mapperType] !== 'undefined';
+
+    mapperSupported: function () {
+        return typeof JSNES.Mappers[this.mapperType] !== "undefined";
     },
-    
-    createMapper: function() {
+
+    createMapper: function () {
         if (this.mapperSupported()) {
             return new JSNES.Mappers[this.mapperType](this.nes);
-        }
-        else {
-			alert('Sorry, not support this rom now!');
-            this.nes.ui.updateStatus("This ROM uses a mapper not supported by JSNES: "+this.getMapperName()+"("+this.mapperType+")");
-            return null;
+        } else {
+            throw new Error(
+                "This ROM uses a mapper not supported by JSNES: " +
+                this.getMapperName() +
+                "(" +
+                this.mapperType +
+                ")"
+            );
         }
     }
 };
